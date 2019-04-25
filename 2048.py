@@ -39,6 +39,8 @@ def newBoard():
 
 
 def gravity(board, way):
+    if way == 'a':  # 왼쪽
+        pass  # 아래 처리 문장은 왼쪽이 기준, 그래서 나머지 방향은 왼쪽 방향 이동에 맞춰 대칭이동
     if way == 'd':  # 오른쪽
         board = [
             [board[i][LENGTH - 1 - j]
@@ -56,18 +58,21 @@ def gravity(board, way):
                 for j in range(LENGTH)]
             for i in range(LENGTH)
         ]
-    printBoard(board)
+    else:
+        print("Input error!")
+        return board
+
     for i in range(LENGTH):
         zeroCnt = board[i].count(0)
-        while board[i].count(0) > 0:
-            board[i].remove(0)
         for z in range(zeroCnt):
+            board[i].remove(0)
             board[i].append(0)
         for j in range(LENGTH - 1):
             if board[i][j] > 0 and board[i][j] == board[i][j + 1]:
                 board[i][j] *= 2
                 board[i].pop(j + 1)
                 board[i].append(0)
+
     if way == 'd':  # 오른쪽
         board = [
             [board[i][LENGTH - 1 - j] for j in range(LENGTH)]
@@ -84,7 +89,6 @@ def gravity(board, way):
                 for j in range(LENGTH)]
             for i in range(LENGTH)
         ]
-    printBoard(board)
     return board
 
 board = newBoard()
