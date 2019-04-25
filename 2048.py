@@ -4,7 +4,7 @@ import random as r
 LENGTH = 4
 
 
-def printBoard(board):
+def printBoard(board):  # 2048 판 출력
     for i in range(LENGTH):
         print("-" * (LENGTH * 6 + 1))
         for j in range(LENGTH):
@@ -19,7 +19,7 @@ def printBoard(board):
     return s
 
 
-def newPut(board):
+def newPut(board):  # 새 블럭(숫자)을 넣기
     empty = [
         i for i in range(LENGTH ** 2) if board[i // LENGTH][i % LENGTH] == 0]
     if len(empty) <= 0:
@@ -29,7 +29,7 @@ def newPut(board):
     return True
 
 
-def newBoard():
+def newBoard():  # 새로운 판을 만들기
     board = [
         [0 for j in range(LENGTH)] for i in range(LENGTH)]
     newPut(board)
@@ -41,7 +41,7 @@ def newBoard():
 def gravity(board, way):
     if way == 'a':  # 왼쪽
         pass  # 아래 처리 문장은 왼쪽이 기준, 그래서 나머지 방향은 왼쪽 방향 이동에 맞춰 대칭이동
-    if way == 'd':  # 오른쪽
+    elif way == 'd':  # 오른쪽
         board = [
             [board[i][LENGTH - 1 - j]
                 for j in range(LENGTH)]
@@ -64,11 +64,12 @@ def gravity(board, way):
 
     for i in range(LENGTH):
         zeroCnt = board[i].count(0)
-        for z in range(zeroCnt):
+        for z in range(zeroCnt):  # 왼쪽의 0 삭제하고 오른쪽으로 0 넣기
             board[i].remove(0)
             board[i].append(0)
         for j in range(LENGTH - 1):
             if board[i][j] > 0 and board[i][j] == board[i][j + 1]:
+                # 같은 숫자가 만났을 때 합치기
                 board[i][j] *= 2
                 board[i].pop(j + 1)
                 board[i].append(0)
