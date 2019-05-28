@@ -33,7 +33,7 @@ def newBoard():  # 새로운 2048 판을 만들기
 def newPut(board):  # 2048 판에 새 블럭(숫자)을 넣기
 
     if not hasEmptyCell(board):
-        return
+        return board
 
     put = r.choice(emptyCell(board))
     board[put // LENGTH][put % LENGTH] = r.choice([2, 2, 2, 2, 4])
