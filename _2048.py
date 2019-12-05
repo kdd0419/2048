@@ -5,55 +5,54 @@ from copy import deepcopy
 LENGTH = 4
 
 
-def emptyCell(board):  # 2048 판에서 빈 칸 반환
+# 2048 판에서 빈 칸 반환
+def emptyCell(board):
 
     return [
         i for i in range(LENGTH ** 2) if board[i // LENGTH][i % LENGTH] == 0
     ]
 
 
-def hasEmptyCell(board):  # 2048 판이 빈 칸을 가지고 있는지
-
+# 2048 판이 빈 칸을 가지고 있는지
+def hasEmptyCell(board):
     return len(emptyCell(board)) > 0
 
 
-def newBoard():  # 새로운 2048 판을 만들기
+# 새로운 2048 판을 만들기
+def newBoard():
 
-    board = [
-        [0 for j in range(LENGTH)] for i in range(LENGTH)]
+    board = [[0 for j in range(LENGTH)] for i in range(LENGTH)]
 
     newPut(board)
     newPut(board)
-
-    score = 0
-
-    return board, score
-
-
-def newPut(board):  # 2048 판에 새 블럭(숫자)을 넣기
-
-    if not hasEmptyCell(board):
-        return board
-
-    put = r.choice(emptyCell(board))
-    board[put // LENGTH][put % LENGTH] = r.choice([2, 2, 2, 2, 4])
 
     return board
 
 
-def printBoard(board, score):  # 2048 판 출력
+# 2048 판에 새 블럭(숫자)을 넣기
+def newPut(board):
 
-    print(("\n" + "-" * (LENGTH * 6) + "\n").join('|'.join(
-        "%5d" % board[i][j] for j in range(LENGTH)) for i in range(LENGTH)))
+    if not hasEmptyCell(board):
+        return
+
+    put = r.choice(emptyCell(board))
+    board[put // LENGTH][put % LENGTH] = r.choice([2, 2, 2, 2, 4])
+
+
+# 2048 판 출력
+def printBoard(board, score):
+
+    print(f'\n{"-"*LENGTH*6}\n'.join(map(lambda line: '|'.join(map(
+        lambda block: f'{block:5d}', line)), board)))
 
     print("score :", score)
 
-    return '\n'.join(' '.join(
-                "%5d" % board[i][j] for j in range(LENGTH)
-            ) for i in range(LENGTH)) + '\n' + str(score)
+    return '\n'.join(map(lambda line: ' '.join(map(
+        lambda block: f'{block:5d}', line)), board)) + f'\n{score}'
 
 
-def wayMove(board, way):  # 2048 판을 왼쪽 방향에 맞춰 대칭이동을 시켜준다.
+# 2048 판을 왼쪽 방향에 맞춰 대칭이동을 시켜준다.
+def wayMove(board, way):
 
     if way == 'd':  # 오른쪽 ( 좌우 대칭 이동 )
         board = [
@@ -129,7 +128,7 @@ def moved(board, g_board):
 def play_2048():
 
     while True:
-        board, score = newBoard()
+        board, score = newBoard(), 0
         printBoard(board=board, score=score)
 
         while hasEmptyCell(board) or not noMerge(board):
